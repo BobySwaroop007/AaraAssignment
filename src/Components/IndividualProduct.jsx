@@ -54,8 +54,8 @@ const IndividualProduct = () => {
       });
   
       const data = await response.json();
-      console.log(data.related_products);
-       
+      setRelatedProducts(data.related_products);
+      condition(true);       
       console.log(ram);
       setSelectedMrp(data.data.price);
       setSelectedRamPrice(data.data.price);
@@ -93,11 +93,11 @@ const IndividualProduct = () => {
     <div className="container mt-5">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
       <div>
-          <img src={selectedColor ? selectedColor.variant_image : product.variant_image} alt={product.variant_image} className="w-64" />
+          <img src={selectedColor ? selectedColor.variant_image : product.variant_image} alt={product.variant_image} className="w-64 mx-4" />
           <img src={selectedColor ? selectedColor.variant_image : product.variant_image} alt={product.variant_image} className="w-14 mx-4 mt-3 border-2 border-orange-500 p-2" />
         </div>
-        <div>
-        <h2 className="text-3xl font-bold mb-4">
+        <div className='mx-4 md:mx-0'>
+        <h2 className="text-3xl font-bold mb-4 sm:mx-2 md:mx-0">
   {selectedColor ? `${product.slug} (${selectedColor.value}, ${selectRam && selectRam})` : product.product_variant_name}
 </h2>
 
@@ -110,28 +110,33 @@ const IndividualProduct = () => {
           <div className="mb-4">
             <h3 className="text-lg font-semibold mb-2">Color</h3>
             <div className="flex flex-wrap gap-2">
-              {product.variant_color_values.map((color) => (
-                <div className={`border-2 p-2 text-center cursor-pointer ${selectedColor === color ? 'border-orange-500' : 'border-gray-300'}`} key={color.id} onClick={() => handleColorClick(color)}>
-                  <img src={color.variant_image} alt={color.value} className="w-18 h-14" />
-                  <p className="text-xs mt-1 text-bold">{color.value}</p>
-                </div>
-              ))}
-            </div>
+  {product.variant_color_values.map((color) => (
+    <div
+      className={`border-2 p-2 text-center cursor-pointer ${selectedColor === color ? 'border-orange-500' : 'border-gray-300'}`}
+      key={color.id}
+      onClick={() => handleColorClick(color)}
+    >
+      <img src={color.variant_image} alt={color.value} className="w-18 h-14" />
+      <p className="text-xs mt-1 text-bold">{color.value}</p>
+    </div>
+  ))}
+</div>
           </div>
           {product.other_variant_values.length > 0 ? 
         <div className="mb-4">
         <h3 className="text-lg font-semibold mb-2">RAM</h3>
-        <div className='flex gap-4'>
-          {product.other_variant_values && Object.values(product.other_variant_values).map((ram, index) => (
-            <span
-              key={index}
-              className={`border-2 p-2 cursor-pointer ${selectRam === ram.value ? 'border-orange-500' : 'border-gray-300'}`}
-              onClick={() => handleRamClick(ram)}
-            >
-              {ram.value}
-            </span>
-          ))}
-        </div>
+        <div className="flex gap-4">
+  {product.other_variant_values &&
+    Object.values(product.other_variant_values).map((ram, index) => (
+      <span
+        key={index}
+        className={`border-2 p-2 cursor-pointer ${selectRam === ram.value ? 'border-orange-500' : 'border-gray-300'}`}
+        onClick={() => handleRamClick(ram)}
+      >
+        {ram.value}
+      </span>
+    ))}
+</div>
       </div>
       
           
@@ -152,31 +157,43 @@ const IndividualProduct = () => {
 
         
         </div>
-        <div className="mt-8">
+        <div className="sm:mx-0 mx-4">
         <h2 className="text-2xl font-bold mb-4">Related Products</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
-  {/* Render related products here */}
-  {set ? (
-  relatedProducts.length > 0 ? (
-    relatedProducts.map((relatedProduct) => (
-      <div key={relatedProduct.id} className=" items-center mb-4">
-        <img src={relatedProduct.variant_image} alt={relatedProduct.product_variant_name} className="w-24 h-24 mr-4" />
-        <p>{relatedProduct.product_variant_name}</p>
-      </div>
-    ))
-  ) : (
-    "Please Click storage"
-  )
+       <div className="grid grid-cols-1 w-96 gap-8" style={{ maxHeight: '400px', overflowY: 'scroll', scrollbarWidth: 'thin', scrollbarColor: 'orange' }}>
+        {set ? (
+    relatedProducts.length > 0 ? (
+      <div className='mx-2 overflow-hidden'> {
+        relatedProducts.map((relatedProduct) => (
+         
+          <div key={relatedProduct.id} className="flex items-center mb-4">
+          <img src={relatedProduct.variant_image} alt={relatedProduct.product_variant_name} className="h-24 mr-4" />
+          <div className="flex-grow">
+            <p>{relatedProduct.product_variant_name}</p>
+            <p>&#8377;{relatedProduct.price}</p>
+          </div>
+         
+        </div>
+         
+        ))
+      }
+        </div>
+    ) : (
+        <p className="text-red-500">Please Click storage</p>
+    )
 ) : (
-  "Choose storage"
+    <p className="text-red-500">Click Storage Or RAM</p>
 )}
 
-  
-
- 
 </div>
 
+<div className='mt-4'>
+  <div><button className="w-96 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-semibold px-4 py-2 rounded-md shadow-md hover:from-yellow-500 hover:to-orange-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">Buy Now</button></div>
+  <div><button className="w-96 bg-green-500 text-white font-semibold px-4 py-2 rounded-md shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">Add to Cart</button></div>
+</div>
+
+
       </div>
+ 
       </div>
    
     </div>

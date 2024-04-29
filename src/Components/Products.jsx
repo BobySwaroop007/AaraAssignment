@@ -39,10 +39,10 @@ const Products = () => {
       {loading ? ( 
         <p>Loading...</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 justify-center mx-8 sm:mx-8 md:mx-2">
           {products.map((product) => (
             <Link to={`/product/${product.id}/${product.variant_id}`} key={product.id}> 
-              <div className="card d-inline-flex shadow p-3 mb-5 bg-white rounded" style={{ width: '18rem' }}>
+              <div className="card d-inline-flex shadow p-3 mb-5 bg-white rounded mx-2" style={{ width: '18rem' }}>
                 <div className="relative">
                   <img src={product.image} className="card-img-top" alt={product.title} />
                 </div>
